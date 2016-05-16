@@ -4,6 +4,7 @@ import (
     "github.com/codegangsta/cli"
 
     "github.com/zeuxisoo/mal/modules/setting"
+    "github.com/zeuxisoo/mal/modules/server"
 )
 
 var CmdServe = cli.Command{
@@ -27,6 +28,13 @@ func runServe(ctx *cli.Context) error {
     if ctx.IsSet("port") {
         setting.Port = ctx.Int("port")
     }
+
+    server.
+        NewServer(&server.Config{
+            Address: setting.Address,
+            Port   : setting.Port,
+        }).
+        Run()
 
     return nil
 }
