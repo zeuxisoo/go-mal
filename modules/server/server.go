@@ -13,14 +13,6 @@ type Config struct {
     Port    int
 }
 
-type Client struct {
-    connection      net.Conn
-    remoteAddress   string
-    time            int64
-    bufferIn        *bufio.Reader
-    bufferOut       *bufio.Writer
-}
-
 type Server struct {
     Address string
     Port    int
@@ -54,12 +46,51 @@ func (s *Server) Run() {
             connection   : conn,
             remoteAddress: conn.RemoteAddr().String(),
             time         : time.Now().Unix(),
-            bufferIn     : bufio.NewReader(conn),
-            bufferOut    : bufio.NewWriter(conn),
+            bufferedIn   : bufio.NewReader(conn),
+            bufferedOut  : bufio.NewWriter(conn),
         })
     }
 }
 
 func handleClient(client *Client) {
+    client.Write("220 Welcome to the Mal fake server")
 
+    //
+    hello, _ := client.Read()
+    log.Print(hello)
+
+    client.Write("250 Hello Domain")
+
+    //
+    mailFrom, _ := client.Read()
+    log.Print(mailFrom)
+
+    client.Write("250 Ok")
+
+    //
+    mailTo, _ := client.Read()
+    log.Print(mailTo)
+
+    client.Write("250 Ok")
+
+    //
+    data, _ := client.Read()
+    log.Print(data)
+
+    client.Write("354 End data with <CR><LF>.<CR><LF>")
+
+    for {
+        body, _ := client.Read()
+        log.Print(body)
+
+        // Submit
+        bytes := []byte(body)
+
+        if bytes[0] == 46 && bytes[1] == 13 && bytes[2] == 10 {
+            client.Write("250 Ok: queued as 12345")
+            break
+        }
+    }
+
+    client.connection.Close()
 }
