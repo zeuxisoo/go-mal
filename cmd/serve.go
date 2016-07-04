@@ -3,8 +3,8 @@ package cmd
 import (
     "github.com/codegangsta/cli"
 
-    "github.com/zeuxisoo/mal/modules/setting"
-    "github.com/zeuxisoo/mal/modules/server"
+    "github.com/zeuxisoo/go-mal/modules/setting"
+    "github.com/zeuxisoo/go-mal/modules/server"
 )
 
 var CmdServe = cli.Command{

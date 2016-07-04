@@ -5,7 +5,7 @@ import (
 
     "github.com/codegangsta/cli"
 
-    "github.com/zeuxisoo/mal/cmd"
+    "github.com/zeuxisoo/go-mal/cmd"
 )
 
 const APP_VER = "0.1.0"
